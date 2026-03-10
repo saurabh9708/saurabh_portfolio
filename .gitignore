@@ -69,7 +69,6 @@ app.*.map.json
 **/macos/Flutter/ephemeralEnv.sh
 
 # Web
-lib/generated_plugin_registrant.dart
 
 # Windows
 windows/flutter/generated_plugins.cmake
@@ -91,3 +90,9 @@ coverage/
 
 # Generated files
 lib/generated/
+lib/firebase_options.dart
+.firebaserc
+.firebase/hosting.YnVpbGRcd2Vi.cache
+pubspec.lock
+pubspec.lock
+pubspec.lock
