@@ -37,9 +37,12 @@ class ExperienceSection extends StatelessWidget {
       ),
     ];
 
+    final hPadding = AppTheme.getHorizontalPadding(context);
+    final vPadding = AppTheme.getVerticalPadding(context);
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 48),
+      padding: EdgeInsets.symmetric(vertical: vPadding, horizontal: hPadding),
       color: AppTheme.bg2,
       child: Center(
         child: ConstrainedBox(
@@ -55,17 +58,27 @@ class ExperienceSection extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              Text('The path here', style: AppTheme.syne48w800),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  'The path here',
+                  style: AppTheme.syne48w800.copyWith(
+                    fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 48),
+                  ),
+                ),
+              ),
               const SizedBox(height: 16),
               SizedBox(
                 width: 560,
                 child: Text(
                   'From curious developer to shipping production apps for global clients.',
-                  style: AppTheme.sans16muted,
+                  style: AppTheme.sans16muted.copyWith(
+                    fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 16, minFactor: 0.9),
+                  ),
                 ),
               ),
               const SizedBox(height: 64),
-              _buildTimeline(timeline),
+              _buildTimeline(context, timeline),
             ],
           ),
         ),
@@ -73,7 +86,9 @@ class ExperienceSection extends StatelessWidget {
     );
   }
 
-  Widget _buildTimeline(List<TimelineItem> items) {
+  Widget _buildTimeline(BuildContext context, List<TimelineItem> items) {
+    final isSmallScreen = MediaQuery.of(context).size.width < 600;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(items.length, (index) {
@@ -81,13 +96,17 @@ class ExperienceSection extends StatelessWidget {
         final isLast = index == items.length - 1;
 
         return Padding(
-          padding: EdgeInsets.only(bottom: isLast ? 0 : 56, left: 48),
+          padding: EdgeInsets.only(
+            bottom: isLast ? 0 : 56,
+            left: isSmallScreen ? 24 : 48,
+          ),
           child: Stack(
+            clipBehavior: Clip.none,
             children: [
               // Timeline line
               if (!isLast)
                 Positioned(
-                  left: -48,
+                  left: isSmallScreen ? -24 : -48,
                   top: 40,
                   bottom: -56,
                   width: 1,
@@ -104,7 +123,7 @@ class ExperienceSection extends StatelessWidget {
 
               // Timeline dot
               Positioned(
-                left: -55,
+                left: isSmallScreen ? -31 : -55,
                 top: 4,
                 child: Container(
                   width: 14,
@@ -132,12 +151,21 @@ class ExperienceSection extends StatelessWidget {
                 children: [
                   Text(item.date.toUpperCase(), style: AppTheme.mono11cyan.copyWith(letterSpacing: 0.12)),
                   const SizedBox(height: 8),
-                  Text(item.role, style: AppTheme.syne20w700),
+                  Text(
+                    item.role,
+                    style: AppTheme.syne20w700.copyWith(
+                      fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 20),
+                    ),
+                  ),
                   const SizedBox(height: 4),
                   Text(item.company, style: AppTheme.sans14muted),
                   const SizedBox(height: 14),
-                  Text(item.description, style: AppTheme.sans14mutedTaller),
-                  const SizedBox(height: 14),
+                  Text(
+                    item.description,
+                    style: AppTheme.sans14mutedTaller.copyWith(
+                      fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 14, minFactor: 0.95),
+                    ),
+                  ),
                   Wrap(
                     spacing: 6,
                     runSpacing: 6,

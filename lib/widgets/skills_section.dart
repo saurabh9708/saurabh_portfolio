@@ -21,9 +21,12 @@ class SkillsSection extends StatelessWidget {
       ('💳', 'Stripe SDK', 0xFF6366F1, 75),
     ];
 
+    final hPadding = AppTheme.getHorizontalPadding(context);
+    final vPadding = AppTheme.getVerticalPadding(context);
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 48),
+      padding: EdgeInsets.symmetric(vertical: vPadding, horizontal: hPadding),
       color: AppTheme.bg,
       child: Center(
         child: ConstrainedBox(
@@ -40,13 +43,23 @@ class SkillsSection extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              Text('Tools I master', style: AppTheme.syne48w800),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  'Tools I master',
+                  style: AppTheme.syne48w800.copyWith(
+                    fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 48),
+                  ),
+                ),
+              ),
               const SizedBox(height: 16),
               SizedBox(
                 width: 560,
                 child: Text(
                   'A full cross-platform toolkit — from mobile to cloud.',
-                  style: AppTheme.sans16muted,
+                  style: AppTheme.sans16muted.copyWith(
+                    fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 16, minFactor: 0.9),
+                  ),
                 ),
               ),
               const SizedBox(height: 64),
@@ -56,10 +69,14 @@ class SkillsSection extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).size.width > 900 ? 4 : 3,
+                  crossAxisCount: MediaQuery.of(context).size.width > 900
+                      ? 4
+                      : MediaQuery.of(context).size.width > 600
+                          ? 3
+                          : 2,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
-                  childAspectRatio: MediaQuery.of(context).size.width > 900 ? 1 : 0.8,
+                  childAspectRatio: MediaQuery.of(context).size.width > 600 ? 1 : 0.9,
                 ),
                 children: skills.map((skill) {
                   return _HoverSkillCard(

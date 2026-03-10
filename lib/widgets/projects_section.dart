@@ -76,50 +76,107 @@ class ProjectsSection extends StatelessWidget {
       ),
     ];
 
+    final liveDemos = [
+      ProjectData(
+        icon: '💻',
+        bgGradient: const LinearGradient(
+          begin: Alignment.topLeft, end: Alignment.bottomRight,
+          colors: [Color(0xFF0a1628), Color(0xFF1a0a2e)],
+        ),
+        tag: 'Live Demo',
+        title: 'Mini Store',
+        description: 'A modern e-commerce storefront for tech accessories. Built with a clean UI, state management, and smooth animations.',
+        technologies: ['Flutter', 'Firebase', 'State Management'],
+        liveLink: 'https://laptoplux-cfd33.firebaseapp.com/',
+      ),
+      ProjectData(
+        icon: '🖥️',
+        bgGradient: const LinearGradient(
+          begin: Alignment.topLeft, end: Alignment.bottomRight,
+          colors: [Color(0xFF001a0a), Color(0xFF0a2010)],
+        ),
+        tag: 'Live Demo',
+        title: 'Laptop Store',
+        description: 'A premium laptop retail application featuring detailed product specifications, a shopping cart, and a responsive layout.',
+        technologies: ['Flutter', 'UI/UX', 'Responsive Design'],
+        liveLink: 'https://laptoplux-cfd33.firebaseapp.com/',
+      ),
+    ];
+
+    final hPadding = AppTheme.getHorizontalPadding(context);
+    final vPadding = AppTheme.getVerticalPadding(context);
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    final isNarrow = MediaQuery.of(context).size.width < 450;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 48),
-      color: AppTheme.bg2,
+      padding: EdgeInsets.symmetric(vertical: vPadding, horizontal: hPadding),
+      color: AppTheme.bg,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Container(width: 28, height: 1, color: AppTheme.cyan),
-                  const SizedBox(width: 10),
-                  Text('FEATURED WORK', style: AppTheme.mono11cyan),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Text('Projects that ship', style: AppTheme.syne48w800),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: 560,
-                child: Text(
-                  'Real products used by real people — built with Flutter, delivered fast.',
-                  style: AppTheme.sans16muted,
-                ),
-              ),
+              // Header
+              isNarrow
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(width: 28, height: 1, color: AppTheme.cyan),
+                            const SizedBox(width: 10),
+                            Text('FEATURED WORK', style: AppTheme.mono11cyan),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text('Selected Projects', style: AppTheme.syne48w800),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(width: 28, height: 1, color: AppTheme.cyan),
+                                const SizedBox(width: 10),
+                                Text('FEATURED WORK', style: AppTheme.mono11cyan),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Text('Selected Projects', style: AppTheme.syne48w800),
+                          ],
+                        ),
+                        Text('Sorted by relevance →', style: AppTheme.mono12muted),
+                      ],
+                    ),
               const SizedBox(height: 64),
 
-              GridView(
+              // Main Projects grid
+              GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
+                itemCount: projects.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).size.width > 900 ? 3 : 1,
-                  mainAxisSpacing: 24,
-                  crossAxisSpacing: 24,
-                  childAspectRatio: 0.72,
+                  crossAxisCount: AppTheme.getGridCrossAxisCount(context, desktop: 3, tablet: 2, mobile: 1),
+                  mainAxisSpacing: 32,
+                  crossAxisSpacing: 32,
+                  childAspectRatio: isMobile ? 0.7 : 0.85,
                 ),
-                children: projects.map((p) => _HoverProjectCard(project: p)).toList(),
+                itemBuilder: (context, index) => _HoverProjectCard(project: projects[index]),
               ),
 
-              const SizedBox(height: 120),
+              const SizedBox(height: 100),
 
-              // Demo Projects Section
+              // Live Demos Section
               Row(
                 children: [
                   Container(width: 28, height: 1, color: AppTheme.cyan),
@@ -128,56 +185,25 @@ class ProjectsSection extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              Text('Try it yourself', style: AppTheme.syne48w800),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: 560,
-                child: Text(
-                  'Interactive demo applications showcasing smooth UI, state management, and real-time data.',
-                  style: AppTheme.sans16muted,
+              Text(
+                'Mini Apps & Prototypes',
+                style: AppTheme.syne36w800.copyWith(
+                  fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 32),
                 ),
               ),
-              const SizedBox(height: 64),
+              const SizedBox(height: 48),
 
-              GridView(
+              GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
+                itemCount: liveDemos.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).size.width > 900 ? 2 : 1, // 2 columns for the 2 demos
+                  crossAxisCount: AppTheme.getGridCrossAxisCount(context, desktop: 2, tablet: 2, mobile: 1),
                   mainAxisSpacing: 24,
                   crossAxisSpacing: 24,
-                  childAspectRatio: 0.8,
+                  childAspectRatio: isMobile ? 0.75 : 1.1,
                 ),
-                children: [
-                  _HoverProjectCard(
-                    project: ProjectData(
-                      icon: '💻',
-                      bgGradient: const LinearGradient(
-                        begin: Alignment.topLeft, end: Alignment.bottomRight,
-                        colors: [Color(0xFF0a1628), Color(0xFF1a0a2e)],
-                      ),
-                      tag: 'Live Demo',
-                      title: 'Mini Store',
-                      description: 'A modern e-commerce storefront for tech accessories. Built with a clean UI, state management, and smooth animations.',
-                      technologies: ['Flutter', 'Firebase', 'State Management'],
-                      liveLink: 'https://laptoplux-cfd33.firebaseapp.com/',
-                    ),
-                  ),
-                  _HoverProjectCard(
-                    project: ProjectData(
-                      icon: '🖥️',
-                      bgGradient: const LinearGradient(
-                        begin: Alignment.topLeft, end: Alignment.bottomRight,
-                        colors: [Color(0xFF001a0a), Color(0xFF0a2010)],
-                      ),
-                      tag: 'Live Demo',
-                      title: 'Laptop Store',
-                      description: 'A premium laptop retail application featuring detailed product specifications, a shopping cart, and a responsive layout.',
-                      technologies: ['Flutter', 'UI/UX', 'Responsive Design'],
-                      liveLink: 'https://laptoplux-cfd33.firebaseapp.com/',
-                    ),
-                  ),
-                ],
+                itemBuilder: (context, index) => _HoverProjectCard(project: liveDemos[index]),
               ),
             ],
           ),

@@ -69,7 +69,10 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
 
             // Main content
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 48),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppTheme.getHorizontalPadding(context),
+                vertical: AppTheme.getVerticalPadding(context),
+              ),
               child: FadeTransition(
                 opacity: CurvedAnimation(parent: _controller, curve: Curves.easeOut),
                 child: SlideTransition(
@@ -98,7 +101,13 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
                               ),
                             ),
                             const SizedBox(width: 8),
-                            Text('Available for Projects', style: AppTheme.mono11cyan.copyWith(fontSize: 11, letterSpacing: 0.15)),
+                            Text(
+                              'Available for Projects',
+                              style: AppTheme.mono11cyan.copyWith(
+                                fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 11, minFactor: 0.9),
+                                letterSpacing: 0.15,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -109,12 +118,27 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
                         fit: BoxFit.scaleDown,
                         child: Column(
                           children: [
-                            Text('Building the', style: AppTheme.syne80w800),
+                            Text(
+                              'Building the',
+                              style: AppTheme.syne80w800.copyWith(
+                                fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 80),
+                              ),
+                            ),
                             ShaderMask(
                               shaderCallback: (bounds) => AppTheme.cyanPurpleGradient.createShader(bounds),
-                              child: Text('Future of', style: AppTheme.syne80w800),
+                              child: Text(
+                                'Future of',
+                                style: AppTheme.syne80w800.copyWith(
+                                  fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 80),
+                                ),
+                              ),
                             ),
-                            Text('Mobile & Web', style: AppTheme.syne80w800),
+                            Text(
+                              'Mobile & Web',
+                              style: AppTheme.syne80w800.copyWith(
+                                fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 80),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -126,7 +150,9 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
                         child: Text(
                           'Flutter Developer crafting pixel-perfect cross-platform apps with beautiful UX, clean architecture, and real-world impact.',
                           textAlign: TextAlign.center,
-                          style: AppTheme.sans16muted,
+                          style: AppTheme.sans16muted.copyWith(
+                            fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 16, minFactor: 0.9),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 48),

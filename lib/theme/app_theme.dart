@@ -180,4 +180,37 @@ class AppTheme {
     end: Alignment.bottomRight,
     colors: [Color(0xFF4f8ef7), Color(0xFF8b5cf6)],
   );
+
+  // ── Responsive Helpers ──
+
+  static double getHorizontalPadding(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width > 1200) return 48;
+    if (width > 900) return 40;
+    if (width > 600) return 32;
+    if (width > 400) return 24;
+    return 16; // Even smaller for narrow phones
+  }
+
+  static int getGridCrossAxisCount(BuildContext context, {int desktop = 3, int tablet = 2, int mobile = 1}) {
+    final width = MediaQuery.of(context).size.width;
+    if (width > 900) return desktop;
+    if (width > 600) return tablet;
+    return mobile;
+  }
+
+  static double getVerticalPadding(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width > 900) return 120;
+    if (width > 600) return 100;
+    return 80;
+  }
+
+  static double getResponsiveFontSize(BuildContext context, {required double baseSize, double minFactor = 0.6}) {
+    final width = MediaQuery.of(context).size.width;
+    if (width > 1200) return baseSize;
+    if (width > 900) return baseSize * 0.9;
+    if (width > 600) return baseSize * 0.8;
+    return (baseSize * 0.7).clamp(baseSize * minFactor, baseSize);
+  }
 }

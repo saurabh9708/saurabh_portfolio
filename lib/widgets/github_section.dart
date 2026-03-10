@@ -7,9 +7,13 @@ class GitHubSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hPadding = AppTheme.getHorizontalPadding(context);
+    final vPadding = AppTheme.getVerticalPadding(context);
+    final isSmallMobile = MediaQuery.of(context).size.width < 480;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 48),
+      padding: EdgeInsets.symmetric(vertical: vPadding, horizontal: hPadding),
       color: AppTheme.bg,
       child: Center(
         child: ConstrainedBox(
@@ -18,39 +22,72 @@ class GitHubSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(width: 28, height: 1, color: AppTheme.cyan),
-                          const SizedBox(width: 10),
-                          Text('OPEN SOURCE', style: AppTheme.mono11cyan),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Text('GitHub Activity', style: AppTheme.syne48w800),
-                    ],
-                  ),
-                  OutlinedButton(
-                    onPressed: () async {
-                      final uri = Uri.parse('https://github.com/saurabh9708');
-                      if (await canLaunchUrl(uri)) {
-                        await launchUrl(uri);
-                      }
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: AppTheme.border),
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+              isSmallMobile
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(width: 28, height: 1, color: AppTheme.cyan),
+                            const SizedBox(width: 10),
+                            Text('OPEN SOURCE', style: AppTheme.mono11cyan),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text('GitHub Activity', style: AppTheme.syne48w800),
+                        ),
+                        const SizedBox(height: 24),
+                        OutlinedButton(
+                          onPressed: () async {
+                            final uri = Uri.parse('https://github.com/saurabh9708');
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri);
+                            }
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: AppTheme.border),
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                          ),
+                          child: Text('View Profile →', style: AppTheme.mono12mutedLink),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(width: 28, height: 1, color: AppTheme.cyan),
+                                const SizedBox(width: 10),
+                                Text('OPEN SOURCE', style: AppTheme.mono11cyan),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Text('GitHub Activity', style: AppTheme.syne48w800),
+                          ],
+                        ),
+                        OutlinedButton(
+                          onPressed: () async {
+                            final uri = Uri.parse('https://github.com/saurabh9708');
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri);
+                            }
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: AppTheme.border),
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                          ),
+                          child: Text('View Profile →', style: AppTheme.mono12mutedLink),
+                        ),
+                      ],
                     ),
-                    child: Text('View Profile →', style: AppTheme.mono12mutedLink),
-                  ),
-                ],
-              ),
               const SizedBox(height: 48),
 
               // Stats grid
@@ -58,10 +95,10 @@ class GitHubSection extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).size.width > 900 ? 4 : 2,
+                  crossAxisCount: AppTheme.getGridCrossAxisCount(context, desktop: 4, tablet: 2, mobile: 1),
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
-                  childAspectRatio: 1,
+                  childAspectRatio: isSmallMobile ? 2.2 : 1.1,
                 ),
                 children: [
                   _buildGithubStat('847', 'contributions this year'),
@@ -75,7 +112,8 @@ class GitHubSection extends StatelessWidget {
 
               // Contribution graph
               Container(
-                padding: const EdgeInsets.all(28),
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: AppTheme.surface,
                   border: Border.all(color: AppTheme.border),
@@ -88,6 +126,7 @@ class GitHubSection extends StatelessWidget {
                     const SizedBox(height: 20),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
                       child: Row(
                         children: List.generate(52, (week) {
                           return Padding(
@@ -98,8 +137,8 @@ class GitHubSection extends StatelessWidget {
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 3),
                                   child: Container(
-                                    width: 11,
-                                    height: 11,
+                                    width: 10,
+                                    height: 10,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(2),
                                       color: _getContributionColor(level),
@@ -116,17 +155,17 @@ class GitHubSection extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
               // Pinned repos
               GridView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).size.width > 900 ? 2 : 1,
+                  crossAxisCount: AppTheme.getGridCrossAxisCount(context, desktop: 2, tablet: 1, mobile: 1),
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
-                  childAspectRatio: 1.5,
+                  childAspectRatio: MediaQuery.of(context).size.width > 600 ? 1.5 : 1.2,
                 ),
                 children: [
                   _buildPinnedRepo('📦 flutter_clean_arch_starter',

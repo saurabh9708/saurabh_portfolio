@@ -80,7 +80,7 @@ class _ContactSectionState extends State<ContactSection> {
               MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: Text(
-                  'saurabh@flutterdev.io',
+                  'Sg1377047@gmail.com',
                   style: GoogleFonts.syne(
                     fontSize: 36,
                     fontWeight: FontWeight.w800,

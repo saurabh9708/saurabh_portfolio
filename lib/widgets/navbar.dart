@@ -17,7 +17,10 @@ class Navbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 400),
-      padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 20),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppTheme.getHorizontalPadding(context),
+        vertical: 20,
+      ),
       decoration: BoxDecoration(
         color: isScrolled ? AppTheme.bg.withOpacity(0.85) : Colors.transparent,
         border: isScrolled
@@ -113,7 +116,10 @@ class _HireButtonState extends State<_HireButton> {
             color: _isHovered ? AppTheme.cyan : AppTheme.cyan.withOpacity(0.6),
             width: 1,
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width < 400 ? 14 : 22,
+            vertical: 10,
+          ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         ),
         child: Text('Hire Me', style: AppTheme.mono12cyan),
