@@ -98,8 +98,8 @@ class AboutSection extends StatelessWidget {
           ),
           children: [
             _buildStatCard('3+', 'Years building Flutter'),
-            _buildStatCard('40+', 'Apps delivered'),
-            _buildStatCard('12', 'Happy clients'),
+            _buildStatCard('8+', 'Apps delivered'),
+            _buildStatCard('5',  'Happy clients'),
             _buildStatCard('98%', 'Client satisfaction'),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
 
 class ProjectsSection extends StatelessWidget {
@@ -115,6 +116,69 @@ class ProjectsSection extends StatelessWidget {
                 ),
                 children: projects.map((p) => _HoverProjectCard(project: p)).toList(),
               ),
+
+              const SizedBox(height: 120),
+
+              // Demo Projects Section
+              Row(
+                children: [
+                  Container(width: 28, height: 1, color: AppTheme.cyan),
+                  const SizedBox(width: 10),
+                  Text('LIVE DEMOS', style: AppTheme.mono11cyan),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text('Try it yourself', style: AppTheme.syne48w800),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: 560,
+                child: Text(
+                  'Interactive demo applications showcasing smooth UI, state management, and real-time data.',
+                  style: AppTheme.sans16muted,
+                ),
+              ),
+              const SizedBox(height: 64),
+
+              GridView(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: MediaQuery.of(context).size.width > 900 ? 2 : 1, // 2 columns for the 2 demos
+                  mainAxisSpacing: 24,
+                  crossAxisSpacing: 24,
+                  childAspectRatio: 0.8,
+                ),
+                children: [
+                  _HoverProjectCard(
+                    project: ProjectData(
+                      icon: '💻',
+                      bgGradient: const LinearGradient(
+                        begin: Alignment.topLeft, end: Alignment.bottomRight,
+                        colors: [Color(0xFF0a1628), Color(0xFF1a0a2e)],
+                      ),
+                      tag: 'Live Demo',
+                      title: 'Mini Store',
+                      description: 'A modern e-commerce storefront for tech accessories. Built with a clean UI, state management, and smooth animations.',
+                      technologies: ['Flutter', 'Firebase', 'State Management'],
+                      liveLink: 'https://laptoplux-cfd33.firebaseapp.com/',
+                    ),
+                  ),
+                  _HoverProjectCard(
+                    project: ProjectData(
+                      icon: '🖥️',
+                      bgGradient: const LinearGradient(
+                        begin: Alignment.topLeft, end: Alignment.bottomRight,
+                        colors: [Color(0xFF001a0a), Color(0xFF0a2010)],
+                      ),
+                      tag: 'Live Demo',
+                      title: 'Laptop Store',
+                      description: 'A premium laptop retail application featuring detailed product specifications, a shopping cart, and a responsive layout.',
+                      technologies: ['Flutter', 'UI/UX', 'Responsive Design'],
+                      liveLink: 'https://laptoplux-cfd33.firebaseapp.com/',
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -222,9 +286,23 @@ class _HoverProjectCardState extends State<_HoverProjectCard> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        Text('GitHub →', style: AppTheme.mono11cyanLink),
+                        Text('GitHub →', style: AppTheme.mono11cyanLink.copyWith(color: AppTheme.muted, decoration: TextDecoration.lineThrough)),
                         const SizedBox(width: 24),
-                        Text('Live Demo →', style: AppTheme.mono11mutedLink),
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () async {
+                              final link = project.liveLink;
+                              if (link != null) {
+                                final uri = Uri.parse(link);
+                                if (await canLaunchUrl(uri)) {
+                                  await launchUrl(uri);
+                                }
+                              }
+                            },
+                            child: Text('Live Demo →', style: project.liveLink != null ? AppTheme.mono11cyanLink : AppTheme.mono11mutedLink),
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -245,6 +323,7 @@ class ProjectData {
   final String title;
   final String description;
   final List<String> technologies;
+  final String? liveLink;
 
   ProjectData({
     required this.icon,
@@ -253,5 +332,6 @@ class ProjectData {
     required this.title,
     required this.description,
     required this.technologies,
+    this.liveLink,
   });
 }
