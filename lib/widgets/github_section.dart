@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
 
 class GitHubSection extends StatelessWidget {
@@ -35,7 +36,12 @@ class GitHubSection extends StatelessWidget {
                     ],
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final uri = Uri.parse('https://github.com/saurabh9708');
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(uri);
+                      }
+                    },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: AppTheme.border),
                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),

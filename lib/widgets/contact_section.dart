@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
 
 class ContactSection extends StatefulWidget {
@@ -140,24 +141,27 @@ class _ContactSectionState extends State<ContactSection> {
                   Text('Or reach out on', style: AppTheme.sans14muted),
                   const SizedBox(height: 16),
                   isLargeScreen
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      ? Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 16,
+                          runSpacing: 12,
                           children: [
-                            _HoverSocialButton(platform: 'GitHub'),
-                            const SizedBox(width: 16),
-                            _HoverSocialButton(platform: 'LinkedIn'),
-                            const SizedBox(width: 16),
-                            _HoverSocialButton(platform: 'Fiverr'),
+                            _HoverSocialButton(platform: 'GitHub', url: 'https://github.com/saurabh9708'),
+                            _HoverSocialButton(platform: 'LinkedIn', url: 'https://www.linkedin.com/in/saurabh-java-developer/'),
+                            _HoverSocialButton(platform: 'Fiverr', url: 'https://www.fiverr.com/s/Q7qme86'),
+                            _HoverSocialButton(platform: 'Upwork', url: 'https://www.upwork.com/freelancers/~017506cb1a548daf69?mp_source=share'),
                           ],
                         )
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            _HoverSocialButton(platform: 'GitHub'),
+                            _HoverSocialButton(platform: 'GitHub', url: 'https://github.com/saurabh9708'),
                             const SizedBox(height: 12),
-                            _HoverSocialButton(platform: 'LinkedIn'),
+                            _HoverSocialButton(platform: 'LinkedIn', url: 'https://www.linkedin.com/in/saurabh-java-developer/'),
                             const SizedBox(height: 12),
-                            _HoverSocialButton(platform: 'Fiverr'),
+                            _HoverSocialButton(platform: 'Fiverr', url: 'https://www.fiverr.com/s/Q7qme86'),
+                            const SizedBox(height: 12),
+                            _HoverSocialButton(platform: 'Upwork', url: 'https://www.upwork.com/freelancers/~017506cb1a548daf69?mp_source=share'),
                           ],
                         ),
                 ],
@@ -214,7 +218,8 @@ class _ContactSectionState extends State<ContactSection> {
 
 class _HoverSocialButton extends StatefulWidget {
   final String platform;
-  const _HoverSocialButton({required this.platform});
+  final String url;
+  const _HoverSocialButton({required this.platform, required this.url});
 
   @override
   State<_HoverSocialButton> createState() => _HoverSocialButtonState();
@@ -225,29 +230,37 @@ class _HoverSocialButtonState extends State<_HoverSocialButton> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        decoration: BoxDecoration(
-          color: _hovered ? AppTheme.cyan.withOpacity(0.08) : Colors.transparent,
-          border: Border.all(
-            color: _hovered ? AppTheme.cyan.withOpacity(0.4) : AppTheme.border,
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              widget.platform,
-              style: _hovered ? AppTheme.mono12cyan : AppTheme.mono12mutedLink,
+    return GestureDetector(
+      onTap: () async {
+        final uri = Uri.parse(widget.url);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri);
+        }
+      },
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) => setState(() => _hovered = true),
+        onExit: (_) => setState(() => _hovered = false),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          decoration: BoxDecoration(
+            color: _hovered ? AppTheme.cyan.withOpacity(0.08) : Colors.transparent,
+            border: Border.all(
+              color: _hovered ? AppTheme.cyan.withOpacity(0.4) : AppTheme.border,
             ),
-          ],
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                widget.platform,
+                style: _hovered ? AppTheme.mono12cyan : AppTheme.mono12mutedLink,
+              ),
+            ],
+          ),
         ),
       ),
     );

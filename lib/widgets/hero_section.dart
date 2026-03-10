@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
 
 class HeroSection extends StatefulWidget {
@@ -167,11 +168,13 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
                         spacing: 28,
                         runSpacing: 12,
                         children: [
-                          _HoverSocialLink(text: 'GitHub'),
+                          _HoverSocialLink(text: 'GitHub', url: 'https://github.com/saurabh9708'),
                           Container(width: 1, height: 16, color: AppTheme.border),
-                          _HoverSocialLink(text: 'LinkedIn'),
+                          _HoverSocialLink(text: 'LinkedIn', url: 'https://www.linkedin.com/in/saurabh-java-developer/'),
                           Container(width: 1, height: 16, color: AppTheme.border),
-                          _HoverSocialLink(text: 'Fiverr'),
+                          _HoverSocialLink(text: 'Fiverr', url: 'https://www.fiverr.com/s/Q7qme86'),
+                          Container(width: 1, height: 16, color: AppTheme.border),
+                          _HoverSocialLink(text: 'Upwork', url: 'https://www.upwork.com/freelancers/~017506cb1a548daf69?mp_source=share'),
                         ],
                       ),
                     ],
@@ -229,7 +232,8 @@ class _GridPainter extends CustomPainter {
 
 class _HoverSocialLink extends StatefulWidget {
   final String text;
-  const _HoverSocialLink({required this.text});
+  final String url;
+  const _HoverSocialLink({required this.text, required this.url});
 
   @override
   State<_HoverSocialLink> createState() => _HoverSocialLinkState();
@@ -240,14 +244,22 @@ class _HoverSocialLinkState extends State<_HoverSocialLink> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: AnimatedDefaultTextStyle(
-        duration: const Duration(milliseconds: 200),
-        style: _hovered ? AppTheme.mono12cyan : AppTheme.mono12mutedLink,
-        child: Text(widget.text),
+    return GestureDetector(
+      onTap: () async {
+        final uri = Uri.parse(widget.url);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri);
+        }
+      },
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) => setState(() => _hovered = true),
+        onExit: (_) => setState(() => _hovered = false),
+        child: AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 200),
+          style: _hovered ? AppTheme.mono12cyan : AppTheme.mono12mutedLink,
+          child: Text(widget.text),
+        ),
       ),
     );
   }
