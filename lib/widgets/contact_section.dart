@@ -41,7 +41,10 @@ class _ContactSectionState extends State<ContactSection> {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 48),
+      padding: EdgeInsets.symmetric(
+        vertical: AppTheme.getVerticalPadding(context),
+        horizontal: AppTheme.getHorizontalPadding(context),
+      ),
       color: AppTheme.bg,
       child: Center(
         child: ConstrainedBox(
@@ -70,24 +73,27 @@ class _ContactSectionState extends State<ContactSection> {
               const SizedBox(height: 16),
 
               Text(
-                'Whether it\'s a startup MVP, a complex enterprise app, or a beautiful consumer product — let\'s make it real.',
+                'Whether it\'s a startup MVP, a complex enterprise app MVVM, or a beautiful consumer product — let\'s make it real.',
                 textAlign: TextAlign.center,
                 style: AppTheme.sans16muted,
               ),
               const SizedBox(height: 36),
 
               // Email link
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: Text(
-                  'Sg1377047@gmail.com',
-                  style: GoogleFonts.syne(
-                    fontSize: 36,
-                    fontWeight: FontWeight.w800,
-                    foreground: Paint()
-                      ..shader = AppTheme.cyanPurpleGradient.createShader(
-                        const Rect.fromLTWH(0, 0, 300, 100),
-                      ),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Text(
+                    'Sg1377047@gmail.com',
+                    style: GoogleFonts.syne(
+                      fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 36),
+                      fontWeight: FontWeight.w800,
+                      foreground: Paint()
+                        ..shader = AppTheme.cyanPurpleGradient.createShader(
+                          const Rect.fromLTWH(0, 0, 300, 100),
+                        ),
+                    ),
                   ),
                 ),
               ),

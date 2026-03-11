@@ -107,6 +107,17 @@ class ProjectsSection extends StatelessWidget {
     final vPadding = AppTheme.getVerticalPadding(context);
     final isMobile = MediaQuery.of(context).size.width < 600;
     final isNarrow = MediaQuery.of(context).size.width < 450;
+    final isTablet = MediaQuery.of(context).size.width >= 600 && MediaQuery.of(context).size.width <= 900;
+
+    // Determine aspect ratio based on screen size to prevent overflows
+    double childAspectRatio = 0.85; // Default for desktop
+    if (isMobile) {
+      childAspectRatio = 0.46; // Ultra-safe to prevent sub-pixel overflows (0.51px)
+    } else if (isTablet) {
+      childAspectRatio = 0.64; // Taller on tablet
+    } else if (MediaQuery.of(context).size.width < 1100) {
+      childAspectRatio = 0.7; // Adjust for smaller desktops
+    }
 
     return Container(
       width: double.infinity,
@@ -118,8 +129,8 @@ class ProjectsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
-              isNarrow
+              // Header: Featured Work
+              isMobile // Trigger stacked header for all mobile sizes to prevent right overflow
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -160,7 +171,7 @@ class ProjectsSection extends StatelessWidget {
                     ),
               const SizedBox(height: 64),
 
-              // Main Projects grid
+              // Main Projects Grid
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -169,7 +180,8 @@ class ProjectsSection extends StatelessWidget {
                   crossAxisCount: AppTheme.getGridCrossAxisCount(context, desktop: 3, tablet: 2, mobile: 1),
                   mainAxisSpacing: 32,
                   crossAxisSpacing: 32,
-                  childAspectRatio: isMobile ? 0.7 : 0.85,
+                  // childAspectRatio: isMobile ? 0.6 : 0.85,
+                  childAspectRatio: isMobile ? 0.6 : isTablet ? 0.62 : 0.72,
                 ),
                 itemBuilder: (context, index) => _HoverProjectCard(project: projects[index]),
               ),
@@ -201,7 +213,7 @@ class ProjectsSection extends StatelessWidget {
                   crossAxisCount: AppTheme.getGridCrossAxisCount(context, desktop: 2, tablet: 2, mobile: 1),
                   mainAxisSpacing: 24,
                   crossAxisSpacing: 24,
-                  childAspectRatio: isMobile ? 0.75 : 1.1,
+                  childAspectRatio: isMobile ? 0.56 : 1.1,
                 ),
                 itemBuilder: (context, index) => _HoverProjectCard(project: liveDemos[index]),
               ),
@@ -227,6 +239,7 @@ class _HoverProjectCardState extends State<_HoverProjectCard> {
   @override
   Widget build(BuildContext context) {
     final project = widget.project;
+    final isMobile = MediaQuery.of(context).size.width < 600;
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
@@ -246,7 +259,7 @@ class _HoverProjectCardState extends State<_HoverProjectCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 200,
+              height: MediaQuery.of(context).size.width < 600 ? 160 : 200,
               decoration: BoxDecoration(
                 gradient: project.bgGradient,
                 borderRadius: const BorderRadius.only(
@@ -284,30 +297,37 @@ class _HoverProjectCardState extends State<_HoverProjectCard> {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.fromLTRB(24, isMobile ? 16 : 20, 24, isMobile ? 16 : 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(project.title, style: AppTheme.syne20w700),
+                    Text(project.title, style: AppTheme.syne20w700, maxLines: 1, overflow: TextOverflow.ellipsis),
                     const SizedBox(height: 10),
-                    Expanded(
-                      child: Text(project.description, style: AppTheme.sans14mutedTall),
+                    Text(
+                      project.description,
+                      style: AppTheme.sans14mutedTall,
+                      maxLines: isMobile ? 3 : 4,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 20),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: project.technologies
-                          .map((tech) => Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.surface2,
-                                  border: Border.all(color: AppTheme.border),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text(tech, style: AppTheme.mono10muted),
-                              ))
-                          .toList(),
+                    const SizedBox(height: 12),
+                    const Expanded(child: SizedBox.shrink()), // Replaced Spacer with explicit safety
+                    const SizedBox(height: 12),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: project.technologies
+                            .map((tech) => Container(
+                                  margin: const EdgeInsets.only(right: 6),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.surface2,
+                                    border: Border.all(color: AppTheme.border),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(tech, style: AppTheme.mono10muted),
+                                ))
+                            .toList(),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Row(

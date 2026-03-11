@@ -14,6 +14,8 @@ class SkillsSection extends StatelessWidget {
       ('🔌', 'REST APIs', 0xFF00D4FF, 90),
       ('☁️', 'AWS', 0xFFFF9900, 72),
       ('▲', 'Vercel', 0xFFFFFFFF, 85),
+      ('📜', 'JavaScript', 0xFFF7DF1E, 85),
+      ('☕', 'Java', 0xFFED8B00, 80),
       ('🐙', 'Git & CI/CD', 0xFFF05032, 88),
       ('🏗', 'Clean Arch', 0xFF8B5CF6, 90),
       ('🔄', 'Riverpod', 0xFF00D4FF, 88),

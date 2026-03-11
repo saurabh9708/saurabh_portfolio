@@ -8,23 +8,23 @@ class ExperienceSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final timeline = [
       TimelineItem(
-        date: '2024 — Present',
-        role: 'Senior Flutter Developer',
+        date: '2026— Present',
+        role: 'Flutter Developer',
         company: 'Freelance / Fiverr Pro Seller',
         description: 'Building cross-platform applications for clients across fintech, healthtech, and e-commerce. Delivering end-to-end Flutter solutions from architecture to App Store deployment.',
         skills: ['Flutter', 'Firebase', 'Supabase', 'AWS'],
       ),
       TimelineItem(
-        date: '2023 — 2024',
-        role: 'Mobile Developer',
-        company: 'TechVentures Studio — Remote',
-        description: 'Led development of a Flutter-based B2B SaaS platform with 10k+ users. Implemented complex state management, offline sync, and custom animation systems.',
-        skills: ['Flutter', 'Bloc', 'GraphQL', 'REST'],
+        date: '2023 - 2025',
+        role: 'Java Developer',
+        company: 'TGS Ventures — Noida',
+        description: 'Led development of a java-based B2B SaaS platform with 10k+ users. Implemented complex state management, offline sync, and custom animation systems.',
+        skills: ['java', 'spring boot', 'mysql', 'REST'],
       ),
       TimelineItem(
         date: '2022 — 2023',
         role: 'Flutter Developer Intern → Junior',
-        company: 'AppForge Ltd.',
+        company: 'Petukji Pvt. Ltd.',
         description: 'Built and maintained multiple client apps. Gained deep experience in Firebase ecosystem, payment integrations, and publishing to Google Play & App Store.',
         skills: ['Flutter', 'Firebase', 'Stripe'],
       ),

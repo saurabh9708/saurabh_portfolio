@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey _aboutKey = GlobalKey();
   final GlobalKey _skillsKey = GlobalKey();
   final GlobalKey _projectsKey = GlobalKey();
-  final GlobalKey _githubKey = GlobalKey();
+  // final GlobalKey _githubKey = GlobalKey();
   final GlobalKey _journeyKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
 
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 AboutSection(key: _aboutKey),
                 SkillsSection(key: _skillsKey),
                 ProjectsSection(key: _projectsKey),
-                GitHubSection(key: _githubKey),
+                // GitHubSection(key: _githubKey),
                 ExperienceSection(key: _journeyKey),
                 ContactSection(key: _contactKey),
                 const SizedBox(height: 40),
@@ -102,9 +102,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 case 'Projects':
                   _scrollToSection(_projectsKey);
                   break;
-                case 'GitHub':
-                  _scrollToSection(_githubKey);
-                  break;
+                // case 'GitHub':
+                //   _scrollToSection(_githubKey);
+                //   break;
                 case 'Journey':
                   _scrollToSection(_journeyKey);
                   break;

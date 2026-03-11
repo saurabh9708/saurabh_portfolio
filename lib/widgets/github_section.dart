@@ -98,13 +98,13 @@ class GitHubSection extends StatelessWidget {
                   crossAxisCount: AppTheme.getGridCrossAxisCount(context, desktop: 4, tablet: 2, mobile: 1),
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
-                  childAspectRatio: isSmallMobile ? 2.2 : 1.1,
+                  childAspectRatio: MediaQuery.of(context).size.width < 400 ? 2.8 : 1.2,
                 ),
                 children: [
-                  _buildGithubStat('847', 'contributions this year'),
-                  _buildGithubStat('38', 'public repositories'),
-                  _buildGithubStat('214', 'total stars earned'),
-                  _buildGithubStat('56', 'pull requests merged'),
+                  _buildGithubStat(context, '84', 'contributions this year'),
+                  _buildGithubStat(context, '38', 'public repositories'),
+                  _buildGithubStat(context, '21', 'total stars earned'),
+                  _buildGithubStat(context, '56', 'pull requests merged'),
                 ],
               ),
 
@@ -185,9 +185,9 @@ class GitHubSection extends StatelessWidget {
     );
   }
 
-  Widget _buildGithubStat(String number, String label) {
+  Widget _buildGithubStat(BuildContext context, String number, String label) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
         color: AppTheme.surface,
         border: Border.all(color: AppTheme.border),
@@ -197,9 +197,24 @@ class GitHubSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(number, style: AppTheme.syne36w800.copyWith(color: AppTheme.cyan)),
-          const SizedBox(height: 6),
-          Text(label, style: AppTheme.mono12mutedPlain.copyWith(fontSize: 12, letterSpacing: 0.05)),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              number,
+              style: AppTheme.syne36w800.copyWith(
+                color: AppTheme.cyan,
+                fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 36),
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: AppTheme.mono12mutedPlain.copyWith(
+              fontSize: AppTheme.getResponsiveFontSize(context, baseSize: 12, minFactor: 0.8),
+              letterSpacing: 0.05,
+            ),
+          ),
         ],
       ),
     );
